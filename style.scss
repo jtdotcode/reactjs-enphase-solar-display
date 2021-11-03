@@ -53,4 +53,28 @@
   //   justify-content: center;
   // }
 
+  .icon {
+    width: 10em;
+    height: 10em;
+    margin-top: 4px;
+  }
+
+  .current-power-image--full{
+    background: linear-gradient(60deg, #fffa13, #fffa13, #fffa13, #fffa13, #fffa13, #fffa13, #fffa13, #fffa13, #fffa13); /* defines the background color of the image */
+    mask: url(./images/lighting_bolt.svg) no-repeat center / contain;
+    -webkit-mask: url(./images/lighting_bolt.svg) no-repeat center / contain;
+  }
+
+  .current-power-image--low{
+    background: linear-gradient(60deg, #140000, #180100, #250300, #370a01, #4d1802, #672d03, #804905, #9a6b08, #b08e0a, #c2ae0d, #cfc50e, #d3ce0f); /* defines the background color of the image */
+    mask: url(./images/lighting_bolt.svg) no-repeat center / contain;
+    -webkit-mask: url(./images/lighting_bolt.svg) no-repeat center / contain;
+  }
+
+  .current-power-image--medium{
+    background: linear-gradient(60deg, #280000, #320909, #531a16, #81381e, #b3621f, #db9415, #f3c605, #fdeb0a, #fffa13); /* defines the background color of the image */
+    mask: url(./images/lighting_bolt.svg) no-repeat center / contain;
+    -webkit-mask: url(./images/lighting_bolt.svg) no-repeat center / contain;
+  }
+
   

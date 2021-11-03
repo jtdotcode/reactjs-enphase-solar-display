@@ -41,6 +41,7 @@
       <div class="current-power grid-items">
         Current Power
         <h1 id="current-power-h1"></h1>
+        <div id="power-level"></div>
       </div>
       <div class="lifetime-energy grid-items">
         lifetime energy Collected
@@ -64,7 +65,7 @@
     system_id: 2319758,
     modules: 54,
     size_w: 12420,
-    current_power: 1,
+    current_power: 4000,
     energy_today: 3782,
     energy_lifetime: 24029618,
     summary_date: "2021-11-03",
@@ -120,5 +121,35 @@
     
   }
 
+
+  function powerLevel(){
+    
+    let element = <div id="icon-current-power-image" class="icon"></div>
+
+    const totalSolarArrayKw = jsonDataExample.size_w / 1000;
+
+    const currentSolarOutputKw = jsonDataExample.current_power / 1000;
+
+    if(currentSolarOutputKw < totalSolarArrayKw / 3){
+      console.log('low');
+      element = <div className="icon current-power-image--low">of {totalSolarArrayKw}Kw</div>
+    }else if(currentSolarOutputKw > totalSolarArrayKw / 1.5){
+      console.log('full');
+      element = <div className="icon current-power-image--full">of {totalSolarArrayKw}Kw</div>
+    }else if(currentSolarOutputKw > totalSolarArrayKw / 2.5){
+      console.log('medium');
+      element = <div className="icon current-power-image--medium">of {totalSolarArrayKw}Kw</div>
+    };
+
+    
+
+
+    ReactDOM.render(element, document.getElementById("power-level"));
+
+
+
+  }
+
   updateValues();
+  powerLevel();
 </script>
