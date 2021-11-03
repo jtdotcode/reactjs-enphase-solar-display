@@ -1,0 +1,124 @@
+<!-- {
+    "system_id": 2319758,
+    "modules": 54,
+    "size_w": 12420,
+    "current_power": 1,
+    "energy_today": 3782,
+    "energy_lifetime": 24029618,
+    "summary_date": "2021-11-03",
+    "source": "microinverters",
+    "status": "normal",
+    "operational_at": 1541983676,
+    "last_report_at": 1635898506,
+    "last_interval_end_at": 1635891300
+} -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <script
+      src="https://unpkg.com/react@17/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="./update.js"></script>
+  </head>
+  <body>
+    <h1>High School Solar Array</h1> 
+    Last reported at:<div id='last-time-updated'></div>
+
+    <div class="container">
+      <div class="current-power grid-items">
+        Current Power
+        <h1 id="current-power-h1"></h1>
+      </div>
+      <div class="lifetime-energy grid-items">
+        lifetime energy Collected
+        <h1 id="lifetime-energy-h1">0Kwh</h1>
+      </div>
+      <div class="energy-today grid-items">
+        Total Energy Collected today
+        <h1 id="energy-today-h1">0Kwh</h1>
+      </div>
+
+      <div class="status grid-items">
+        Array Status
+        <h1 id="status-h1">Normal</h1>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script type="text/babel">
+  const jsonDataExample = {
+    system_id: 2319758,
+    modules: 54,
+    size_w: 12420,
+    current_power: 1,
+    energy_today: 3782,
+    energy_lifetime: 24029618,
+    summary_date: "2021-11-03",
+    source: "microinverters",
+    status: "normal",
+    operational_at: 1541983676,
+    last_report_at: 1635905705,
+    last_interval_end_at: 1635891300,
+  };
+
+  
+
+  function format_time(s) {
+  const dtFormat = new Intl.DateTimeFormat('en-GB', {
+    timeStyle: 'medium',
+    timeZone: 'Australia/Sydney',
+    hour12: false
+  });
+  
+  return dtFormat.format(new Date(s * 1e3));
+}
+
+
+
+
+  function updateValues() {
+    const currentPower = <div>{jsonDataExample.current_power}kw</div>;
+
+    const lifetimeEnergy = <div>{Math.round(jsonDataExample.energy_lifetime / 1000000)} Mwh</div>;
+
+    const totalEnergyCollectedToday = (
+      <div>{jsonDataExample.energy_today / 1000 }kwh</div>
+    );
+
+    const arrayStatus = <div>{jsonDataExample.status}</div>;
+
+    const lastTimeUpdated = <div>{ format_time(jsonDataExample.last_report_at) }</div>;
+
+    const elementArray = [
+      { element: currentPower, id: "current-power-h1" },
+      { element: lifetimeEnergy, id: "lifetime-energy-h1" },
+      { element: totalEnergyCollectedToday, id: "energy-today-h1" },
+      { element: arrayStatus, id: "status-h1" },
+      {element: lastTimeUpdated, id: "last-time-updated"}
+    ];
+
+    // highlight-next-line
+
+  elementArray.forEach(function(item) {
+    ReactDOM.render(item.element, document.getElementById(item.id));
+  })
+
+    
+  }
+
+  updateValues();
+</script>
