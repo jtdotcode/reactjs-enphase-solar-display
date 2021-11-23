@@ -34,27 +34,54 @@
     <script crossorigin src="./update.js"></script>
   </head>
   <body>
-    <h1>High School Solar Array</h1> 
-    Last reported at:<div id='last-time-updated'></div>
+    <header>
+      <h1>School Solar Array - Output</h1> 
+      Last reported at:<div id='last-time-updated'></div>
+    </header>
+    
 
     <div class="container">
       <div class="current-power grid-items">
-        Current Power
-        <h1 id="current-power-h1"></h1>
-        <div id="power-level"></div>
+      <div class="solar-panel-container"> 
+        <div class="solar-panel-background">
+          Current power output
+          <h1 id="current-power-h1"></h1>
+          <div id="power-level"></div>
+          <h1>of 12kw Array</h1>
+        </div>
+      </div>
       </div>
       <div class="lifetime-energy grid-items">
-        lifetime energy Collected
-        <h1 id="lifetime-energy-h1">0Kwh</h1>
+        <div class="solar-panel-container"> 
+          <div class="solar-panel-background">
+            lifetime energy Collected
+          <h1 id="lifetime-energy-h1">0Kwh</h1>
+          <div>Equivalent Amount of Telsa Batteries<div id="amount-of-ev"></div></div><img src="./images/tesla-model-s.png" alt="Electric Car" id="model-s-image">
+          </div>
+        </div>
       </div>
+        
       <div class="energy-today grid-items">
-        Total Energy Collected today
-        <h1 id="energy-today-h1">0Kwh</h1>
+        <div class="solar-panel-container">
+          <div class="solar-panel-background">
+            Total Energy Collected today
+          <h1 id="energy-today-h1">0Kwh</h1>
+            <div id="energy-today">
+          </div> 
+          </div>
+        </div>
       </div>
+       
 
       <div class="status grid-items">
-        Array Status
-        <h1 id="status-h1">Normal</h1>
+        <div class="solar-panel-container">
+          <div class="solar-panel-background">
+            <div class="solar-panel-content">
+              Array Status
+            <h1 id="status-h1">Normal</h1>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </body>
@@ -92,9 +119,9 @@
 
 
   function updateValues() {
-    const currentPower = <div>{jsonDataExample.current_power}kw</div>;
+    const currentPower = <div>{jsonDataExample.current_power / 1000 }kw</div>;
 
-    const lifetimeEnergy = <div>{Math.round(jsonDataExample.energy_lifetime / 1000000)} Mwh</div>;
+    const lifetimeEnergy = <div>{Math.round(jsonDataExample.energy_lifetime / 1000)} Kwh</div>;
 
     const totalEnergyCollectedToday = (
       <div>{jsonDataExample.energy_today / 1000 }kwh</div>
@@ -104,12 +131,15 @@
 
     const lastTimeUpdated = <div>{ format_time(jsonDataExample.last_report_at) }</div>;
 
+    const amountOfEv = <div>{ Math.round(jsonDataExample.energy_lifetime / 1000 / 90 )}</div>;
+
     const elementArray = [
       { element: currentPower, id: "current-power-h1" },
       { element: lifetimeEnergy, id: "lifetime-energy-h1" },
       { element: totalEnergyCollectedToday, id: "energy-today-h1" },
       { element: arrayStatus, id: "status-h1" },
-      {element: lastTimeUpdated, id: "last-time-updated"}
+      {element: lastTimeUpdated, id: "last-time-updated"},
+      {element: amountOfEv, id: "amount-of-ev"}
     ];
 
     // highlight-next-line
@@ -132,13 +162,13 @@
 
     if(currentSolarOutputKw < totalSolarArrayKw / 3){
       console.log('low');
-      element = <div className="icon current-power-image--low">of {totalSolarArrayKw}Kw</div>
+      element = <div className="icon current-power-image--low"></div>
     }else if(currentSolarOutputKw > totalSolarArrayKw / 1.5){
       console.log('full');
-      element = <div className="icon current-power-image--full">of {totalSolarArrayKw}Kw</div>
+      element = <div className="icon current-power-image--full"></div>
     }else if(currentSolarOutputKw > totalSolarArrayKw / 2.5){
       console.log('medium');
-      element = <div className="icon current-power-image--medium">of {totalSolarArrayKw}Kw</div>
+      element = <div className="icon current-power-image--medium"></div>
     };
 
     
@@ -150,6 +180,40 @@
 
   }
 
+  function energyLevel(){
+    
+    let element = <div className="battery"><div className="liquid"></div></div>
+
+    // const totalSolarArrayKw = jsonDataExample.size_w / 1000;
+
+    // const currentSolarOutputKw = jsonDataExample.current_power / 1000;
+
+    // if(currentSolarOutputKw < totalSolarArrayKw / 3){
+    //   console.log('low');
+    //   element = <div className="icon current-power-image--low">of {totalSolarArrayKw}Kw</div>
+    // }else if(currentSolarOutputKw > totalSolarArrayKw / 1.5){
+    //   console.log('full');
+    //   element = <div className="icon current-power-image--full">of {totalSolarArrayKw}Kw</div>
+    // }else if(currentSolarOutputKw > totalSolarArrayKw / 2.5){
+    //   console.log('medium');
+    //   element = <div className="icon current-power-image--medium">of {totalSolarArrayKw}Kw</div>
+    // };
+
+    
+
+
+    ReactDOM.render(element, document.getElementById("energy-today"));
+
+
+
+  }
+
+  
   updateValues();
   powerLevel();
+  energyLevel();
+  
+
+
+
 </script>
