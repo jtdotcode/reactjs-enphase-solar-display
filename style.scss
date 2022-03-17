@@ -85,15 +85,15 @@ $speed: 10.25s;
 
 // Container Settings
 $batteryHeight: $size;
-$batteryRadius: $size * 0.02;
+$batteryRadius: calc($size * 0.02);
 $batteryColor: #425C77;
 $batteryBackground: white;
 $batteryHighlight: rgba($batteryBackground, 0.325);
 
 
 // Liquid Settings
-$liquidSize: $size / 4;
-$liquidOffset: $liquidSize / -2.25;
+$liquidSize: calc($size / 4);
+$liquidOffset: calc($liquidSize / -2.25);
 $liquidColor: #71FB85;
 
 
@@ -141,7 +141,7 @@ $liquidColor: #71FB85;
 .battery {
   display: inline-block;
   position: relative;
-  width: $size / 2;
+  width: calc($size / 1.97);
   height: $size;
   box-shadow: 0 0 0 0.2rem $batteryColor;
   background: $batteryBackground;
@@ -151,11 +151,11 @@ $liquidColor: #71FB85;
   &:before {
     content: '';
     position: absolute;
-    left: $size / 8;
-    right: $size / 8;
-    top: $size * -0.075;
-    height: $size * 0.075;
-    width: $size / 4;
+    left: calc($size / 8);
+    right: calc($size / 8);
+    top: calc($size * -0.075);
+    height: calc($size * 0.075);
+    width: calc($size / 4);
     background: $batteryColor;
     border-radius: $batteryRadius * 2;
   }
@@ -181,7 +181,7 @@ $liquidColor: #71FB85;
   bottom: 0;
   left: 0;
   right: 0;
-  width: $size / 2;
+  width: calc($size / 2);
   background: $liquidColor;
   animation: load $speed infinite;
   
@@ -263,6 +263,21 @@ h5 {
  
 }
 
-.solar-panel-content {
-  background: red;
+.solar-panel-content-array_status {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+
+.solar-panel-content-array_status h1{
+  font-size: 7rem;
+}
+
+
+.panel-header-text {
+  font-size: 3rem;
 }
