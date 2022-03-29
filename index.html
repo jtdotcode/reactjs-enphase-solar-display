@@ -1,17 +1,4 @@
-<!-- {
-    "system_id": 2319758,
-    "modules": 54,
-    "size_w": 12420,
-    "current_power": 1,
-    "energy_today": 3782,
-    "energy_lifetime": 24029618,
-    "summary_date": "2021-11-03",
-    "source": "microinverters",
-    "status": "normal",
-    "operational_at": 1541983676,
-    "last_report_at": 1635898506,
-    "last_interval_end_at": 1635891300
-} -->
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,7 +6,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Solar Array Output</title>
     <link rel="stylesheet" href="style.css" />
 
     <script
@@ -34,17 +21,14 @@
     <script crossorigin src="./update.js"></script>
   </head>
   <body>
-    <header>
-      <h1>School Solar Array - Output</h1> 
-      Last reported at:<div id='last-time-updated'></div>
-    </header>
     
-
+    
+<div class="content-wrapper">
     <div class="container">
       <div class="current-power grid-items">
       <div class="solar-panel-container"> 
         <div class="solar-panel-background">
-          <div class="panel-header-text">Current power output</div>
+          <div class="panel-header-text">Current power output:</div>
           <h1 id="current-power-h1"></h1>
           <div id="power-level"></div>
           <h1>of 12kw Array</h1>
@@ -54,17 +38,24 @@
       <div class="lifetime-energy grid-items">
         <div class="solar-panel-container"> 
           <div class="solar-panel-background">
-            <div class="panel-header-text">Lifetime energy collected</div>
+            <div class="panel-header-text">Lifetime energy collected:</div>
           <h1 id="lifetime-energy-h1">0Kwh</h1>
-          <div>Equivalent Amount of Telsa Batteries<div id="amount-of-ev"></div></div><img src="./images/tesla-model-s.png" alt="Electric Car" id="model-s-image">
+          <div><h2>Equivalent Amount of Tesla Batteries<div id="amount-of-ev"></div></h2></div><img src="./images/tesla-model-s.png" alt="Electric Car" id="model-s-image">
           </div>
         </div>
+      </div>
+
+      <div class="centre-column grid-items">
+        <header>
+          <h1 id="school-solar-array-header">Solar Array Output</h1> 
+          <h2>Last reported at:<div id='last-time-updated'></div></h2>
+        </header>
       </div>
         
       <div class="energy-today grid-items">
         <div class="solar-panel-container">
           <div class="solar-panel-background">
-            <div class="panel-header-text"> Total energy collected today </div>
+            <div class="panel-header-text">Energy collected today:</div>
           <h1 id="energy-today-h1">0Kwh</h1>
             <div id="energy-today">
           </div> 
@@ -72,37 +63,45 @@
         </div>
       </div>
        
+      
 
       <div class="status grid-items">
         <div class="solar-panel-container">
           <div class="solar-panel-background">
             <div class="solar-panel-content-array_status">
-              <div class="panel-header-text">Array status</div>
+              <div class="panel-header-text">Array status:</div>
             <div id="status-h1"></div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
   </body>
 </html>
 
 <script type="text/babel">
-  const jsonDataExample = {
-    system_id: 2319758,
-    modules: 54,
-    size_w: 12420,
-    current_power: 4000,
-    energy_today: 3782,
-    energy_lifetime: 24029618,
-    summary_date: "2021-11-03",
-    source: "microinverters",
-    status: "normal",
-    operational_at: 1541983676,
-    last_report_at: 1635905705,
-    last_interval_end_at: 1635891300,
-  };
 
+ function loadJSON(callback) {
+  var xobj = new XMLHttpRequest();
+  xobj.overrideMimeType("application/json");
+  xobj.open('GET', 'solardata.json', true); 
+  xobj.onreadystatechange = function () {
+    if (xobj.readyState == 4 && xobj.status == "200") {
+    callback(xobj.responseText);
+    }
+  };
+  xobj.send(null);
+}
+
+
+loadJSON(function(response) {
+    // Parse JSON string into object
+    var actual_JSON = JSON.parse(response);
+    // console.log(actual_JSON);
+    let solarData = actual_JSON;
+
+    console.log(solarData);
   
 
   function format_time(s) {
@@ -119,19 +118,19 @@
 
 
   function updateValues() {
-    const currentPower = <div>{jsonDataExample.current_power / 1000 }kw</div>;
+    const currentPower = <div>{solarData.current_power / 1000 }kw</div>;
 
-    const lifetimeEnergy = <div>{Math.round(jsonDataExample.energy_lifetime / 1000)} Kwh</div>;
+    const lifetimeEnergy = <div>{Math.round(solarData.energy_lifetime / 1000)} Kwh</div>;
 
     const totalEnergyCollectedToday = (
-      <div>{jsonDataExample.energy_today / 1000 }kwh</div>
+      <div>{solarData.energy_today / 1000 }kwh</div>
     );
 
-    const arrayStatus = <div> <h1 style={{color: statusColour(jsonDataExample.status)}}>{jsonDataExample.status.toUpperCase()}</h1></div>;
+    const arrayStatus = <div> <h1 style={{color: statusColour(solarData.status)}}>{solarData.status.toUpperCase()}</h1></div>;
 
-    const lastTimeUpdated = <div>{ format_time(jsonDataExample.last_report_at) }</div>;
+    const lastTimeUpdated = <div>{ format_time(solarData.last_report_at) }</div>;
 
-    const amountOfEv = <div>{ Math.round(jsonDataExample.energy_lifetime / 1000 / 90 )}</div>;
+    const amountOfEv = <div>{ Math.round(solarData.energy_lifetime / 1000 / 90 )}</div>;
 
     const elementArray = [
       { element: currentPower, id: "current-power-h1" },
@@ -156,9 +155,9 @@
     
     let element = <div id="icon-current-power-image" class="icon"></div>
 
-    const totalSolarArrayKw = jsonDataExample.size_w / 1000;
+    const totalSolarArrayKw = solarData.size_w / 1000;
 
-    const currentSolarOutputKw = jsonDataExample.current_power / 1000;
+    const currentSolarOutputKw = solarData.current_power / 1000;
 
     if(currentSolarOutputKw < totalSolarArrayKw / 3){
       console.log('low');
@@ -184,28 +183,7 @@
     
     let element = <div className="battery"><div className="liquid"></div></div>
 
-    // const totalSolarArrayKw = jsonDataExample.size_w / 1000;
-
-    // const currentSolarOutputKw = jsonDataExample.current_power / 1000;
-
-    // if(currentSolarOutputKw < totalSolarArrayKw / 3){
-    //   console.log('low');
-    //   element = <div className="icon current-power-image--low">of {totalSolarArrayKw}Kw</div>
-    // }else if(currentSolarOutputKw > totalSolarArrayKw / 1.5){
-    //   console.log('full');
-    //   element = <div className="icon current-power-image--full">of {totalSolarArrayKw}Kw</div>
-    // }else if(currentSolarOutputKw > totalSolarArrayKw / 2.5){
-    //   console.log('medium');
-    //   element = <div className="icon current-power-image--medium">of {totalSolarArrayKw}Kw</div>
-    // };
-
-    
-
-
     ReactDOM.render(element, document.getElementById("energy-today"));
-
-
-
   }
 
   function statusColour(status){
@@ -237,8 +215,8 @@
   updateValues();
   powerLevel();
   energyLevel();
+
+  });
+
   
-
-
-
 </script>
